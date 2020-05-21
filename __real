@@ -1,0 +1,18 @@
+(base) lmariott@lmariott-ThinkPad-T450:~/workspace/ft_ping$ sudo tcpdump -i lo -X -vv
+tcpdump: listening on lo, link-type EN10MB (Ethernet), capture size 262144 bytes
+17:39:51.930380 IP (tos 0x0, ttl 64, id 47451, offset 0, flags [DF], proto ICMP (1), length 84)
+    localhost > localhost: ICMP echo request, id 5562, seq 1, length 64
+	0x0000:  4500 0054 b95b 4000 4001 834b 7f00 0001  E..T.[@.@..K....
+	0x0010:  7f00 0001 0800 62e3 15ba 0001 c7fd c35e  ......b........^
+	0x0020:  0000 0000 2732 0e00 0000 0000 1011 1213  ....'2..........
+	0x0030:  1415 1617 1819 1a1b 1c1d 1e1f 2021 2223  .............!"#
+	0x0040:  2425 2627 2829 2a2b 2c2d 2e2f 3031 3233  $%&'()*+,-./0123
+	0x0050:  3435 3637                                4567
+17:39:51.930404 IP (tos 0x0, ttl 64, id 47452, offset 0, flags [none], proto ICMP (1), length 84)
+    localhost > localhost: ICMP echo reply, id 5562, seq 1, length 64
+	0x0000:  4500 0054 b95c 0000 4001 c34a 7f00 0001  E..T.\..@..J....
+	0x0010:  7f00 0001 0000 6ae3 15ba 0001 c7fd c35e  ......j........^
+	0x0020:  0000 0000 2732 0e00 0000 0000 1011 1213  ....'2..........
+	0x0030:  1415 1617 1819 1a1b 1c1d 1e1f 2021 2223  .............!"#
+	0x0040:  2425 2627 2829 2a2b 2c2d 2e2f 3031 3233  $%&'()*+,-./0123
+	0x0050:  3435 3637                                4567
