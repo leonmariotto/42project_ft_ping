@@ -1,33 +1,28 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   getip.c                                            :+:      :+:    :+:   */
+/*   resolv_addrs.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: lmariott <lmariott@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2020/05/16 00:37:52 by lmariott          #+#    #+#             */
-/*   Updated: 2020/05/25 21:55:47 by lmariott         ###   ########.fr       */
+/*   Created: 2020/05/21 19:54:29 by lmariott          #+#    #+#             */
+/*   Updated: 2020/05/25 20:14:34 by lmariott         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_ping.h"
-#include <stdio.h>
 
-int				getip(char *hostname, struct addrinfo **result)
+int					resolv_addrs(char *dsthost)
 {
-	struct addrinfo				*hints;
-
-	if (!(hints = (struct addrinfo*)malloc(sizeof(struct addrinfo))))
+	if (getip(dsthost, &myping->dst_ai) < 0)
 		return (-1);
-	hints->ai_family = AF_INET;
-	hints->ai_socktype = SOCK_STREAM;
-	hints->ai_flags = 0;
-	hints->ai_protocol = 0;
-	if (getaddrinfo(hostname, 0, hints, result) != 0)
-	{
-		ft_putendl_fd("Could not resolv hostname", 2);
+	if (!(myping->dstaddr = ft_strnew(35)))
 		return (-1);
-	}
-	free(hints);
+	/*
+	** IPV6 ?
+	*/
+	inet_ntop(AF_INET, (const void *)&((struct sockaddr_in*)
+						myping->dst_ai->ai_addr)->sin_addr,
+						myping->dstaddr, 35);
 	return (0);
 }

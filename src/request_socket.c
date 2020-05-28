@@ -1,33 +1,38 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   getip.c                                            :+:      :+:    :+:   */
+/*   request_socket.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: lmariott <lmariott@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2020/05/16 00:37:52 by lmariott          #+#    #+#             */
-/*   Updated: 2020/05/25 21:55:47 by lmariott         ###   ########.fr       */
+/*   Created: 2020/05/24 16:33:56 by lmariott          #+#    #+#             */
+/*   Updated: 2020/05/26 17:10:36 by lmariott         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_ping.h"
 #include <stdio.h>
 
-int				getip(char *hostname, struct addrinfo **result)
+int						request_socket(void)
 {
-	struct addrinfo				*hints;
-
-	if (!(hints = (struct addrinfo*)malloc(sizeof(struct addrinfo))))
-		return (-1);
-	hints->ai_family = AF_INET;
-	hints->ai_socktype = SOCK_STREAM;
-	hints->ai_flags = 0;
-	hints->ai_protocol = 0;
-	if (getaddrinfo(hostname, 0, hints, result) != 0)
+	int optval;
+	/*
+	** Ouverture du socket raw
+	** need root privilege
+	*/
+	if ((myping->socket = socket(AF_INET,SOCK_RAW,IPPROTO_ICMP)) < 0)
 	{
-		ft_putendl_fd("Could not resolv hostname", 2);
+		ft_putendl_fd("socket return an error", 2);
+		return (1);
+	}
+	/*
+	** Setsockopt pour que le noyau n'ajoute pas de header IP, falcultatif
+	** avec IPPROTO_ICMP
+	*/
+  if (setsockopt(myping->socket,IPPROTO_IP,IP_HDRINCL,&optval,sizeof(int)))
+	{
+		ft_putendl_fd("setsockopt return an error", 2);
 		return (-1);
 	}
-	free(hints);
 	return (0);
 }

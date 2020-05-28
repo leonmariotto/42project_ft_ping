@@ -6,17 +6,26 @@
 #    By: lsimanau <lsimanau@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/07/14 14:00:58 by pemora            #+#    #+#              #
-#    Updated: 2020/05/16 01:49:23 by lmariott         ###   ########.fr        #
+#    Updated: 2020/05/26 15:20:44 by lmariott         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME := ft_ping
 CC ?= clang
-CFLAGS ?= -Wall -Wextra -Werror
+CFLAGS ?= -Wall -Wextra -Werror -g3
 
 SRC := src/main.c\
-				src/fill_hdr.c\
-				src/getip.c
+				src/init_ping.c\
+				src/resolv_addrs.c\
+				src/fill_content.c\
+				src/fill_hdrs.c\
+				src/request_socket.c\
+				src/pingloop.c\
+				src/getip.c\
+				src/update_icmp_seq.c\
+				src/signal.c\
+				src/stop_ping.c\
+				src/clear_myping.c
 
 HDR := libft/libft.h	
 

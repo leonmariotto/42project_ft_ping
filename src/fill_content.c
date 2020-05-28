@@ -1,33 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   getip.c                                            :+:      :+:    :+:   */
+/*   fill_content.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: lmariott <lmariott@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2020/05/16 00:37:52 by lmariott          #+#    #+#             */
-/*   Updated: 2020/05/25 21:55:47 by lmariott         ###   ########.fr       */
+/*   Created: 2020/05/24 16:40:17 by lmariott          #+#    #+#             */
+/*   Updated: 2020/05/25 14:13:47 by lmariott         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_ping.h"
-#include <stdio.h>
 
-int				getip(char *hostname, struct addrinfo **result)
+int					fill_content(void)
 {
-	struct addrinfo				*hints;
+	int j;
 
-	if (!(hints = (struct addrinfo*)malloc(sizeof(struct addrinfo))))
-		return (-1);
-	hints->ai_family = AF_INET;
-	hints->ai_socktype = SOCK_STREAM;
-	hints->ai_flags = 0;
-	hints->ai_protocol = 0;
-	if (getaddrinfo(hostname, 0, hints, result) != 0)
-	{
-		ft_putendl_fd("Could not resolv hostname", 2);
-		return (-1);
-	}
-	free(hints);
+	j = -1;
+	while (++j < DATALEN)
+		myping->content[j] = 16 + j;
 	return (0);
 }
