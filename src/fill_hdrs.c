@@ -6,7 +6,7 @@
 /*   By: lmariott <lmariott@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/21 20:05:24 by lmariott          #+#    #+#             */
-/*   Updated: 2020/05/25 20:23:47 by lmariott         ###   ########.fr       */
+/*   Updated: 2020/06/27 23:11:32 by lmariott         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,8 +47,9 @@ int				fill_hdrs(void)
 	myping->iphdr->ip_hl = IPHDR_HL;
 	myping->iphdr->ip_tos = IPHDR_TOS;
 	myping->iphdr->ip_len = IPHDRLEN + ICMPHDRLEN;
-	myping->iphdr->ip_id = htons(getuid());
-	myping->iphdr->ip_ttl = IPHDR_TTL;
+	myping->iphdr->ip_id = htons(getpid());
+	!myping->opt.ttl ? (myping->iphdr->ip_ttl = IPHDR_TTL) :
+(myping->iphdr->ip_ttl = (char)myping->opt.ttl);
 	myping->iphdr->ip_off = htons(1 << 14);
 	myping->iphdr->ip_p = IPHDR_PROTO;
 	myping->iphdr->ip_sum = 0;
@@ -57,22 +58,12 @@ int				fill_hdrs(void)
 							((struct sockaddr_in*)myping->dst_ai->ai_addr)->sin_addr;
 	//myping->iphdr->ip_src = (struct in_addr)
 							//((struct sockaddr_in*)myping->dst_ai->ai_addr)->sin_addr;
-	//myping->icmphdr->type = 255;// ICMPHDR_TYPE;
-	//myping->icmphdr->code = ICMPHDR_CODE;
-	//myping->icmphdr->un.echo.id = ICMPHDR_ID;
-	//myping->icmphdr->un.echo.sequence = ICMPHDR_SEQ;
-	//myping->icmphdr->checksum = 0;
-	//myping->icmphdr->checksum = checksum((unsigned short*)myping->icmphdr,
-	//															ICMPHDRLEN + DATALEN);
-	// struct icmp version
 	myping->icmphdr->icmp_type = ICMPHDR_TYPE;
 	myping->icmphdr->icmp_code = ICMPHDR_CODE;
-	myping->icmphdr->icmp_id = htons(ICMPHDR_ID);
-	myping->icmphdr->icmp_seq= htons(ICMPHDR_SEQ);
+	myping->icmphdr->icmp_id = htons(getpid());
+	myping->icmphdr->icmp_seq= 0;
 	myping->icmphdr->icmp_cksum = 0;
 	myping->icmphdr->icmp_cksum = checksum((unsigned short*)myping->icmphdr,
 																ICMPHDRLEN + DATALEN);
-	//myping->iphdr->ip_sum = checksum((unsigned short*)myping->iphdr,
-//															IPHDRLEN + ICMPHDRLEN + DATALEN);
 	return (0);
 }

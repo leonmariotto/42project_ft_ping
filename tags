@@ -1,19 +1,21 @@
-DATALEN	include/ft_ping.h	75
+DATALEN	include/ft_ping.h	97
 FALSE	libft/libft.h	22
 FT_PING_H	include/ft_ping.h	14
-ICMPHDRLEN	include/ft_ping.h	74
-ICMPHDR_CODE	include/ft_ping.h	53
-ICMPHDR_ID	include/ft_ping.h	54
-ICMPHDR_SEQ	include/ft_ping.h	55
-ICMPHDR_TYPE	include/ft_ping.h	52
-IPHDRLEN	include/ft_ping.h	73
-IPHDR_HL	include/ft_ping.h	64
-IPHDR_PROTO	include/ft_ping.h	67
-IPHDR_SEQ	include/ft_ping.h	65
-IPHDR_TOS	include/ft_ping.h	63
-IPHDR_TTL	include/ft_ping.h	66
-IPHDR_VERSION	include/ft_ping.h	62
+ICMPHDRLEN	include/ft_ping.h	96
+ICMPHDR_CODE	include/ft_ping.h	74
+ICMPHDR_ID	include/ft_ping.h	75
+ICMPHDR_SEQ	include/ft_ping.h	76
+ICMPHDR_TYPE	include/ft_ping.h	73
+IPHDRLEN	include/ft_ping.h	95
+IPHDR_HL	include/ft_ping.h	84
+IPHDR_OFF	include/ft_ping.h	85
+IPHDR_PROTO	include/ft_ping.h	89
+IPHDR_SEQ	include/ft_ping.h	87
+IPHDR_TOS	include/ft_ping.h	86
+IPHDR_TTL	include/ft_ping.h	88
+IPHDR_VERSION	include/ft_ping.h	83
 LIBFT_H	libft/libft.h	14
+MYPING	include/ft_ping.h	62
 Mmain	src/main.c	/^int       main(int ac, char **av)$/
 STDERR	libft/libft.h	27
 STDIN	libft/libft.h	25
@@ -23,14 +25,20 @@ base_size	libft/ft_itoabase.c	/^static int	base_size(const char *base)$/
 base_size	libft/ft_atoibase.c	/^static int		base_size(const char *base)$/
 checksum	src/fill_hdrs.c	/^unsigned short			checksum(unsigned short *addr, in/
 checksum	src/fill_hdr.c	/^unsigned short			checksum(unsigned short *addr, in/
+clear_myping	src/clear_myping.c	/^void				clear_myping(void)$/
 cmpcase	libft/ft_strcmp_casinsens.c	/^static int	cmpcase(char c1, char c2)$/
+content	include/ft_ping.h	51
 content	libft/libft.h	121
 content_size	libft/libft.h	122
 count_letters	libft/ft_strsplit.c	/^static int	count_letters(const char *s, char c)$/
 count_words	libft/ft_strsplit.c	/^static int	count_words(const char *s, char c)$/
-data	include/ft_ping.h	42
+datagram	include/ft_ping.h	48
 default_del	libft/default_del.c	/^void	default_del(void *content, size_t content_siz/
-dst_ai	include/ft_ping.h	39
+diff_timeval_now	src/diff_timeval.c	/^float		diff_timeval_now(struct timeval first)$/
+dst_ai	include/ft_ping.h	47
+dstaddr	include/ft_ping.h	53
+dstname	include/ft_ping.h	52
+fill_content	src/fill_content.c	/^int					fill_content(void)$/
 fill_hdrs	src/fill_hdrs.c	/^int				fill_hdrs(void)$/
 fill_icmphdr	src/fill_hdr.c	/^int						fill_icmphdr(struct icmp **icmphdr)$/
 fill_iphdr	src/fill_hdr.c	/^int						fill_iphdr(struct ip **iphdr, struct sock/
@@ -48,6 +56,7 @@ ft_bzero	libft/ft_bzero.c	/^void	ft_bzero(void *s, size_t n)$/
 ft_factorial	libft/ft_factorial.c	/^int	ft_factorial(int n)$/
 ft_fibonacci	libft/ft_fibonacci.c	/^int	ft_fibonacci(int n)$/
 ft_get_filename	libft/ft_get_filename.c	/^char	*ft_get_filename(const char *path)$/
+ft_getopt	src/getopt.c	/^char				*ft_getopt(char **args)$/
 ft_intlen	libft/ft_intlen.c	/^size_t	ft_intlen(const int n)$/
 ft_isalnum	libft/ft_isalnum.c	/^int	ft_isalnum(int c)$/
 ft_isalpha	libft/ft_isalpha.c	/^int	ft_isalpha(int c)$/
@@ -136,19 +145,32 @@ ft_toupper	libft/ft_toupper.c	/^int	ft_toupper(int c)$/
 get_length	libft/ft_strnjoin.c	/^static size_t	get_length(const size_t n, va_list a/
 get_value	libft/ft_atoibase.c	/^static long		get_value(char c, int i, int nbase, c/
 get_value_from_base	libft/ft_atoibase.c	/^static long		get_value_from_base(char c, const cha/
-getip	include/ft_ping.h	/^int				getip(struct addrinfo **result)$/
+getavg	src/stop_ping.c	/^static float getavg(void)$/
 getip	src/getip.c	/^int				getip(char *hostname, struct addrinfo **res/
-icmphdr	include/ft_ping.h	41
-init_myping	src/init_ping.c	/^static int	init_myping(void)$/
+getmax	src/stop_ping.c	/^static float	getmax(void)$/
+getmin	src/stop_ping.c	/^static float	getmin(void)$/
+icmphdr	include/ft_ping.h	50
+init_myping	src/init_ping.c	/^int					init_myping(void)$/
 init_ping	src/init_ping.c	/^int					init_ping(char *dsthost)$/
-iphdr	include/ft_ping.h	40
-myping	include/ft_ping.h	45
+init_tv	include/ft_ping.h	54
+iphdr	include/ft_ping.h	49
+ltime	include/ft_ping.h	57
+myping	include/ft_ping.h	64
 next	libft/libft.h	123
+nprcv	include/ft_ping.h	56
+npsend	include/ft_ping.h	55
+opt_ttl	include/ft_ping.h	58
+pingloop	src/pingloop.c	/^int										pingloop(void)$/
 print_usage	src/main.c	/^int				print_usage(void)$/
+request_socket	src/request_socket.c	/^int						request_socket(void)$/
 resolv_addrs	src/resolv_addrs.c	/^int					resolv_addrs(char *dsthost)$/
 s_list	libft/libft.h	119
-s_ping	include/ft_ping.h	35
-socket	include/ft_ping.h	37
-src_ai	include/ft_ping.h	38
+s_ping	include/ft_ping.h	44
+sendandrecv	src/pingloop.c	/^char							*sendandrecv(void)$/
+signal_	src/signal.c	/^void			signal_(void)$/
+signal_handler	src/signal.c	/^void			signal_handler(int sign)$/
+socket	include/ft_ping.h	46
+stop_ping	src/stop_ping.c	/^void					stop_ping(void)$/
 t_list	libft/libft.h	124
-t_ping	include/ft_ping.h	43
+t_ping	include/ft_ping.h	59
+update_icmp_seq	src/update_icmp_seq.c	/^void					update_icmp_seq(void)$/

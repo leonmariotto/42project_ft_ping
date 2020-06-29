@@ -6,7 +6,7 @@
 /*   By: lmariott <lmariott@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/16 00:43:13 by lmariott          #+#    #+#             */
-/*   Updated: 2020/05/26 17:32:15 by lmariott         ###   ########.fr       */
+/*   Updated: 2020/06/29 21:20:13 by lmariott         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,37 +23,69 @@
 # include <sys/socket.h>
 # include <arpa/inet.h>
 
-//char					*getlocalip(void);
-//char					*getip(char *hostname);
+//char							*getlocalip(void);
+//char							*getip(char *hostname);
 unsigned short			checksum(unsigned short *addr, int len);
+int									ft_sleep(int second);
+int									init_ping(char *dsthost);
+int									init_myping(void);
+void								stop_ping(void);
+void								clear_myping(void);
+char								*ft_getopt(char **args);
+int									resolv_addrs(char *dsthost);
+int									fill_hdrs(void);
+int									request_socket(void);
+int									fill_content(void);
+int									pingloop(void);
+void								update_icmp_seq(void);
+void								signal_(void);
+float								diff_timeval_now(struct timeval first);
+int									getip(char *hostname, struct addrinfo **result);
 
-int				init_ping(char *dsthost);
-void			stop_ping(void);
-void			clear_myping(void);
-int				resolv_addrs(char *dsthost);
-int				fill_hdrs(void);
-int				request_socket(void);
-int				fill_content(void);
-int				pingloop(void);
-void			update_icmp_seq(void);
-void			signal_(void);
-
-int				getip(char *hostname, struct addrinfo **result);
+typedef struct				s_option
+{
+	int								ttl;
+	int								f;
+	int								ip6;
+}											t_option;
 
 typedef struct				s_ping
 {
-	int								socket;
-	struct addrinfo		*dst_ai;
-	void							*datagram;
-	struct ip					*iphdr;
-	struct icmp				*icmphdr;
-	char							*content;
-	char							*dstname;
-	char							*dstaddr;
-	unsigned long int	npsend;
-	unsigned long int nprcv;
-	long int					init_tv;
+	int								socket; // Mon socket RAW
+	struct addrinfo		*dst_ai; // Address de destination obtenu avec getaddrinfo
+	void							*datagram; // DATAGRAM TO SEND
+	struct ip					*iphdr; // HEADER IP
+	struct icmp				*icmphdr; // HEADER ICMP
+	char							*content; // DATA
+	char							*dstname; // DSTNAME FOR STOP_PING
+	char							*dstaddr; // DSTADDR FOR STOP_PING
+	struct timeval		init_tv; // TIME au lancement de ping
+	int								p_count[3]; // [0] : send ; [1] : rcv ; [2] : error
+	t_list						*ltime; // Liste de time pour avg/min/max etc
+	t_option					opt; // Option de la cli
+	struct timeval		t_send; // timeval before send, for PINGLOOP
+	char							*fromaddr; // FROMADDR FOR PINGLOOP
+//	void							*rcv_buff; // BUFFER FILLED BY RECVMSG FOR PINGLOOP
+	char							rcv_buff[4096]; // BUFFER FILLED BY RECVMSG FOR PINGLOOP
 }											t_ping;
+
+/*
+** First 32 bits :
+**	- Version						4 bits version = 6
+**	- Traffic Class			8 bits traffic class field
+**	- Flow label				20 bits fields
+** Second 32 bits :
+**	- Payload lenght		16 bits unsigned integer
+**	- Next header				8 bit selector
+**	- Hop limit					8 bit unsigned integer
+** Then :
+** Source address				128 bits
+** Destination address	128 bits
+*/
+struct							s_ip6
+{
+	int			vtf;
+};
 
 # ifndef MYPING
 #  define MYPING

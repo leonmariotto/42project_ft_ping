@@ -5,66 +5,135 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: lmariott <lmariott@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2020/05/25 19:39:42 by lmariott          #+#    #+#             */
-/*   Updated: 2020/05/26 17:18:27 by lmariott         ###   ########.fr       */
+/*   Created: 2020/06/27 17:09:43 by lmariott          #+#    #+#             */
+/*   Updated: 2020/06/27 21:57:45 by lmariott         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_ping.h"
 #include <sys/time.h>
 #include <stdio.h>
+#include <signal.h>
 
-char							*sendandrecv(void)
+/*
+** New pingloop :
+** Le packet est envoyé toutes les secondes avec SIGALRM
+** Le recvmsg est placé dans un while (42)
+*/
+
+/*
+** send_packet :
+** - Prepare le nouveau packet (nouveau id, checksum, ...)
+** - Sauvegarde le icmp_seq, et la timeval dans une seule structure dans uneliste chainée.
+** - Update p_count[0]
+** - ON NE COMPARE PAS LA SEQUENCE POUR L'INSTANT TROP GALERE
+*/
+void							send_packet(int sign)
 {
-	char								*buffer;
-	socklen_t						sizerecvfrom;
-	struct sockaddr_in	fromaddr;
-
-	if (!(buffer = (char*)malloc(DATALEN + IPHDRLEN + ICMPHDRLEN)))
-		return (NULL);
-	ft_bzero(buffer, DATALEN + IPHDRLEN + ICMPHDRLEN);
+	(void)sign;
+	myping->icmphdr->icmp_seq += 1;
+	myping->icmphdr->icmp_cksum = 0;
+	myping->icmphdr->icmp_cksum = checksum((unsigned short*)myping->icmphdr,
+																ICMPHDRLEN + DATALEN);
+	gettimeofday(&myping->t_send, 0);
+	myping->p_count[0]++;
 	sendto(myping->socket,myping->datagram, IPHDRLEN + ICMPHDRLEN + DATALEN, 0,
 						 myping->dst_ai->ai_addr, myping->dst_ai->ai_addrlen);
-	sizerecvfrom = myping->dst_ai->ai_addrlen;
-	recvfrom(myping->socket, buffer, DATALEN + IPHDRLEN + ICMPHDRLEN,
-							 0, (struct sockaddr*)&fromaddr, &sizerecvfrom);
-	if (!ft_strcmp(inet_ntoa(fromaddr.sin_addr), myping->dstaddr))
-		return (buffer);
-	free(buffer);
-	return (NULL);
-	//perror("recvfrom");
-	//printf("addrrecvfrom = %s\n", );
-	//printf("addrsendto = %s\n", myping->dstaddr);
-	//int i;
-  //for ( i=0; i < IPHDRLEN+ICMPHDRLEN+DATALEN;i++)
-	//	printf("%.2X ",*((char*)myping->datagram + i));
-	//printf("\n");
+	alarm(1);
 }
 
-int										pingloop(void)
+int								rcv_(void)
 {
-	struct timeval		before;
-	struct timeval		after;
-	char							*buffer;
+	struct sockaddr_in	src_addr;
+	socklen_t						srcaddrsize;
+	struct iovec iov[1];
+	struct msghdr message;
+	int r;
+	
+	srcaddrsize = myping->dst_ai->ai_addrlen;
+	iov[0].iov_base = myping->rcv_buff;
+	iov[0].iov_len = sizeof(myping->rcv_buff);
+	message.msg_name = &src_addr;
+	message.msg_namelen = srcaddrsize;
+	message.msg_iov = iov;
+	message.msg_iovlen = 1;
+	message.msg_control = 0;
+	message.msg_controllen = 0;
+	r = recvmsg(myping->socket,&message,0);
+	inet_ntop(AF_INET,
+						(const void *)&((struct sockaddr_in*)&src_addr)->sin_addr,
+						myping->fromaddr, srcaddrsize);
+	return (r);
+}
 
-	// TODO count
-	while (1)
+int								is_mine(void)
+{
+	//printf("\n\ngo\n");
+	//int i;
+	//for ( i=0; i < 48;i++)
+	//	printf("%.2X ",*((char*)myping->rcv_buff + i));
+	//printf("\n");
+	if (((struct icmp*)
+			(myping->rcv_buff + IPHDRLEN))->icmp_type == ICMP_ECHOREPLY)
 	{
-		// TODO check timeout
-		myping->npsend++;
-		update_icmp_seq();
-		gettimeofday(&before, NULL);
-		if ((buffer = sendandrecv()))
+		if (((struct icmp*)(myping->rcv_buff + IPHDRLEN))->icmp_id
+				== myping->icmphdr->icmp_id)
+			return (1);
+	}
+	else
+	{
+		if (((struct icmp*)(myping->rcv_buff + 48))->icmp_id
+				== myping->icmphdr->icmp_id)
+			return (1);
+	}
+	return (0);
+}
+
+void							print_ping(float time_diff)
+{
+	int type;
+
+	type = (int)((struct icmp*)(myping->rcv_buff + IPHDRLEN))->icmp_type;
+	if (type != ICMP_ECHOREPLY)
+	{
+		myping->p_count[2]++;
+		printf("From %s: icmp_seq=%-3d ",
+				 myping->fromaddr,
+				 ((struct icmp*)(myping->datagram + IPHDRLEN))->icmp_seq);
+		if (type == ICMP_TIME_EXCEEDED)
+			printf("Time to Live Exceeded\n");
+		if (type == ICMP_DEST_UNREACH)
+			printf("Destination Unreachable\n");
+	}
+	else
+	{
+		myping->p_count[1]++;
+		printf("%d bytes from %s: icmp_seq=%-3d ttl=%d time=%f ms\n",
+				 DATALEN + ICMPHDRLEN,
+				 myping->fromaddr,
+				 ((struct icmp*)(myping->datagram + IPHDRLEN))->icmp_seq,
+				 ((struct ip*)myping->rcv_buff)->ip_ttl,
+				 time_diff);
+	}
+}
+
+int								pingloop(void)
+{
+	int				r;
+	float			time_diff;
+
+	send_packet(0);
+	signal(SIGALRM, send_packet);
+	while(42)
+	{
+		r = rcv_();
+		time_diff = diff_timeval_now(myping->t_send);
+		if (r < 0)
+			return (-1);
+		else if (r > 0 && is_mine())
 		{
-			myping->nprcv++;
-			gettimeofday(&after, NULL);
-			printf("%d bytes from %s: icmp_seq=%ld ttl=%d time=%f ms\n",
-						 DATALEN + ICMPHDRLEN,
-						 myping->dstaddr,
-						 myping->nprcv,
-						 ((struct ip*)buffer)->ip_ttl,
-						 (float)((long int)(after.tv_usec - before.tv_usec) / 1000));
-			free(buffer);
+			ft_lstadd(&myping->ltime, ft_lstnew(&time_diff, sizeof(float)));
+			print_ping(time_diff);
 		}
 	}
 }

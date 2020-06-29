@@ -6,7 +6,7 @@
 #    By: lsimanau <lsimanau@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/07/14 14:00:58 by pemora            #+#    #+#              #
-#    Updated: 2020/05/26 15:20:44 by lmariott         ###   ########.fr        #
+#    Updated: 2020/06/27 22:56:30 by lmariott         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -25,7 +25,10 @@ SRC := src/main.c\
 				src/update_icmp_seq.c\
 				src/signal.c\
 				src/stop_ping.c\
-				src/clear_myping.c
+				src/clear_myping.c\
+				src/diff_timeval.c\
+				src/getopt.c\
+				src/ft_sleep.c
 
 HDR := libft/libft.h	
 
@@ -34,7 +37,7 @@ LIBDIR := libft/
 
 OBJ := $(SRC:.c=.o)
 LIBFT := libft/libft.a
-LIBS := $(LIBFT) -ltermcap
+LIBS := $(LIBFT) -lm
 
 all: $(NAME) 
 
