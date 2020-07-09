@@ -6,7 +6,7 @@
 /*   By: lmariott <lmariott@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/29 00:21:07 by lmariott          #+#    #+#             */
-/*   Updated: 2020/06/29 21:19:51 by lmariott         ###   ########.fr       */
+/*   Updated: 2020/07/02 12:01:36 by lmariott         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,10 @@ Invalid argument", 2);
 		else if (args[i][1] == '6')
 		{
 			myping->opt.ip6 = 1;
+		}
+		else if (args[i][1] == 'v')
+		{
+			myping->opt.v = 1;
 		}
 		else if (args[i][1] == 'p')
 		{

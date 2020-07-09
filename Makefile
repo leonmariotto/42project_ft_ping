@@ -6,7 +6,7 @@
 #    By: lsimanau <lsimanau@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/07/14 14:00:58 by pemora            #+#    #+#              #
-#    Updated: 2020/06/27 22:56:30 by lmariott         ###   ########.fr        #
+#    Updated: 2020/06/29 21:46:07 by lmariott         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -27,8 +27,7 @@ SRC := src/main.c\
 				src/stop_ping.c\
 				src/clear_myping.c\
 				src/diff_timeval.c\
-				src/getopt.c\
-				src/ft_sleep.c
+				src/getopt.c
 
 HDR := libft/libft.h	
 

@@ -6,7 +6,7 @@
 /*   By: lmariott <lmariott@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/21 20:05:24 by lmariott          #+#    #+#             */
-/*   Updated: 2020/06/27 23:11:32 by lmariott         ###   ########.fr       */
+/*   Updated: 2020/07/02 11:42:31 by lmariott         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,9 +43,27 @@ unsigned short			checksum(unsigned short *addr, int len)
 int				fill_hdrs(void)
 {
 	// Todo make IPV6 compatible
-	myping->iphdr->ip_v = IPHDR_VERSION;
-	myping->iphdr->ip_hl = IPHDR_HL;
-	myping->iphdr->ip_tos = IPHDR_TOS;
+	// TODO htons forbidden, remove it
+	if (myping->opt.ip6)
+	{
+		/* IPv6 header */
+		//iphdr = (struct ip6_hdr *) &out_packet_buffer[0] ;
+		
+		/* IPv6 version (4 bits), Traffic class (8 bits), Flow label (20 bits) */
+		//iphdr->ip6_flow = htonl ((6 << 28) | (0 << 20) | 0); /* Next header (8 bits): 44 for Frag */ iphdr->ip6_nxt = 44;
+		
+		/* Hop limit (8 bits): default to maximum value */
+		//iphdr->ip6_hops = 255;
+		
+		/* src address */
+		//bcopy(&srcaddr->sin6_addr,&(iphdr->ip6_src), 16) ;
+		
+		/* dst address */
+		//bcopy(&cliaddr->sin6_addr,&(iphdr->ip6_dst), 16);
+	}
+	myping->iphdr->ip_v = 4;
+	myping->iphdr->ip_hl = 5;
+	myping->iphdr->ip_tos = 0;
 	myping->iphdr->ip_len = IPHDRLEN + ICMPHDRLEN;
 	myping->iphdr->ip_id = htons(getpid());
 	!myping->opt.ttl ? (myping->iphdr->ip_ttl = IPHDR_TTL) :

@@ -6,7 +6,7 @@
 /*   By: lmariott <lmariott@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/16 00:43:13 by lmariott          #+#    #+#             */
-/*   Updated: 2020/06/29 21:20:13 by lmariott         ###   ########.fr       */
+/*   Updated: 2020/07/02 12:02:02 by lmariott         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,7 @@ typedef struct				s_option
 	int								ttl;
 	int								f;
 	int								ip6;
+	int								v;
 }											t_option;
 
 typedef struct				s_ping
@@ -64,6 +65,7 @@ typedef struct				s_ping
 	t_list						*ltime; // Liste de time pour avg/min/max etc
 	t_option					opt; // Option de la cli
 	struct timeval		t_send; // timeval before send, for PINGLOOP
+	int								t_count; // timeval for stop_ping
 	char							*fromaddr; // FROMADDR FOR PINGLOOP
 //	void							*rcv_buff; // BUFFER FILLED BY RECVMSG FOR PINGLOOP
 	char							rcv_buff[4096]; // BUFFER FILLED BY RECVMSG FOR PINGLOOP

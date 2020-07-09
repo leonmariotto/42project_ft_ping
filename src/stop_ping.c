@@ -6,7 +6,7 @@
 /*   By: lmariott <lmariott@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/26 15:03:41 by lmariott          #+#    #+#             */
-/*   Updated: 2020/06/27 22:56:05 by lmariott         ###   ########.fr       */
+/*   Updated: 2020/07/02 11:41:52 by lmariott         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,6 @@ static float getavg(void)
 	return (sum / (float)c);
 }
 
-// TODO : strandard deviation
 static float	getstddev(void)
 {
 	float		avg;
@@ -88,7 +87,8 @@ static float	getstddev(void)
 		c++;
 		head = head->next;
 	}
-	sum = sqrt(sum / c);
+	if (c)
+		sum = sqrt(sum / c);
 	return (sum);
 }
 
@@ -102,7 +102,7 @@ void					stop_ping(void)
 	printf("%.1f%% packet loss, time %dms\n"
 				 , (float)(myping->p_count[1] == 0 ? 100
 									 : ((myping->p_count[1] / myping->p_count[0]) - 1) * -100)
-				 , (int)diff_timeval_now(myping->init_tv));
+				 , myping->t_count);
 	printf("rtt min/avg/max/stddev = %f/%f/%f/%f ms\n"
 				 , getmin()
 				 , getavg()

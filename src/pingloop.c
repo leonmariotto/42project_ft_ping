@@ -6,7 +6,7 @@
 /*   By: lmariott <lmariott@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/06/27 17:09:43 by lmariott          #+#    #+#             */
-/*   Updated: 2020/06/27 21:57:45 by lmariott         ###   ########.fr       */
+/*   Updated: 2020/07/02 11:41:31 by lmariott         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,7 @@ void							send_packet(int sign)
 	myping->icmphdr->icmp_cksum = 0;
 	myping->icmphdr->icmp_cksum = checksum((unsigned short*)myping->icmphdr,
 																ICMPHDRLEN + DATALEN);
+	myping->t_count = (int)diff_timeval_now(myping->init_tv);
 	gettimeofday(&myping->t_send, 0);
 	myping->p_count[0]++;
 	sendto(myping->socket,myping->datagram, IPHDRLEN + ICMPHDRLEN + DATALEN, 0,
