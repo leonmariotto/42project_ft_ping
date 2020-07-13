@@ -6,7 +6,7 @@
 /*   By: lmariott <lmariott@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/03 17:36:22 by lmariott          #+#    #+#             */
-/*   Updated: 2020/06/29 21:20:27 by lmariott         ###   ########.fr       */
+/*   Updated: 2020/07/13 12:58:19 by lmariott         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@ int				print_usage(void)
 int       main(int ac, char **av)
 {
 	char			*host;
+	struct ip6_hdr test;
 
 	(void)ac;
 	if (init_myping() < 0)
@@ -31,6 +32,8 @@ int       main(int ac, char **av)
 		print_usage();
 		return (1);
 	}
+	if (myping->opt.ip6)
+		printf("sizeof ip6_hdr = %ld\n", sizeof(test));
 	if (init_ping(host) < 0)
 		return (1);
 	signal_();

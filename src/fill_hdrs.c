@@ -6,7 +6,7 @@
 /*   By: lmariott <lmariott@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/21 20:05:24 by lmariott          #+#    #+#             */
-/*   Updated: 2020/07/02 11:42:31 by lmariott         ###   ########.fr       */
+/*   Updated: 2020/07/13 12:49:36 by lmariott         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,27 +61,26 @@ int				fill_hdrs(void)
 		/* dst address */
 		//bcopy(&cliaddr->sin6_addr,&(iphdr->ip6_dst), 16);
 	}
-	myping->iphdr->ip_v = 4;
-	myping->iphdr->ip_hl = 5;
-	myping->iphdr->ip_tos = 0;
-	myping->iphdr->ip_len = IPHDRLEN + ICMPHDRLEN;
-	myping->iphdr->ip_id = htons(getpid());
-	!myping->opt.ttl ? (myping->iphdr->ip_ttl = IPHDR_TTL) :
-(myping->iphdr->ip_ttl = (char)myping->opt.ttl);
-	myping->iphdr->ip_off = htons(1 << 14);
-	myping->iphdr->ip_p = IPHDR_PROTO;
-	myping->iphdr->ip_sum = 0;
-	//myping->iphdr->ip_src = myping->src_ai->ai_addr;
-	myping->iphdr->ip_dst = (struct in_addr)
+	((struct ip *)myping->datagram)->ip_v = 4;
+	((struct ip *)myping->datagram)->ip_hl = 5;
+	((struct ip *)myping->datagram)->ip_tos = 0;
+	((struct ip *)myping->datagram)->ip_len = IPHDRLEN + ICMPHDRLEN;
+	((struct ip *)myping->datagram)->ip_id = htons(getpid());
+	((struct ip *)myping->datagram)->ip_off = htons(1 << 14);
+	((struct ip *)myping->datagram)->ip_p = IPHDR_PROTO;
+	((struct ip *)myping->datagram)->ip_sum = 0;
+	((struct ip *)myping->datagram)->ip_dst = (struct in_addr)
 							((struct sockaddr_in*)myping->dst_ai->ai_addr)->sin_addr;
 	//myping->iphdr->ip_src = (struct in_addr)
 							//((struct sockaddr_in*)myping->dst_ai->ai_addr)->sin_addr;
-	myping->icmphdr->icmp_type = ICMPHDR_TYPE;
-	myping->icmphdr->icmp_code = ICMPHDR_CODE;
-	myping->icmphdr->icmp_id = htons(getpid());
-	myping->icmphdr->icmp_seq= 0;
-	myping->icmphdr->icmp_cksum = 0;
-	myping->icmphdr->icmp_cksum = checksum((unsigned short*)myping->icmphdr,
+	!myping->opt.ttl ? (((struct ip *)myping->datagram)->ip_ttl = IPHDR_TTL) :
+(((struct ip *)myping->datagram)->ip_ttl = (char)myping->opt.ttl);
+	((struct icmp*)(myping->datagram + IPHDRLEN))->icmp_type = ICMPHDR_TYPE;
+	((struct icmp*)(myping->datagram + IPHDRLEN))->icmp_code = ICMPHDR_CODE;
+	((struct icmp*)(myping->datagram + IPHDRLEN))->icmp_id = htons(getpid());
+	((struct icmp*)(myping->datagram + IPHDRLEN))->icmp_seq= 0;
+	((struct icmp*)(myping->datagram + IPHDRLEN))->icmp_cksum = 0;
+	((struct icmp*)(myping->datagram + IPHDRLEN))->icmp_cksum = checksum((unsigned short*)((struct icmp*)(myping->datagram + IPHDRLEN)),
 																ICMPHDRLEN + DATALEN);
 	return (0);
 }

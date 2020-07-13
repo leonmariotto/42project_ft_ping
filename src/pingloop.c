@@ -6,7 +6,7 @@
 /*   By: lmariott <lmariott@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/06/27 17:09:43 by lmariott          #+#    #+#             */
-/*   Updated: 2020/07/02 11:41:31 by lmariott         ###   ########.fr       */
+/*   Updated: 2020/07/13 12:51:47 by lmariott         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,9 +31,9 @@
 void							send_packet(int sign)
 {
 	(void)sign;
-	myping->icmphdr->icmp_seq += 1;
-	myping->icmphdr->icmp_cksum = 0;
-	myping->icmphdr->icmp_cksum = checksum((unsigned short*)myping->icmphdr,
+	((struct icmp*)(myping->datagram + IPHDRLEN))->icmp_seq += 1;
+	((struct icmp*)(myping->datagram + IPHDRLEN))->icmp_cksum = 0;
+	((struct icmp*)(myping->datagram + IPHDRLEN))->icmp_cksum = checksum((unsigned short*)((struct icmp*)(myping->datagram + IPHDRLEN)),
 																ICMPHDRLEN + DATALEN);
 	myping->t_count = (int)diff_timeval_now(myping->init_tv);
 	gettimeofday(&myping->t_send, 0);
@@ -78,13 +78,13 @@ int								is_mine(void)
 			(myping->rcv_buff + IPHDRLEN))->icmp_type == ICMP_ECHOREPLY)
 	{
 		if (((struct icmp*)(myping->rcv_buff + IPHDRLEN))->icmp_id
-				== myping->icmphdr->icmp_id)
+				== ((struct icmp*)(myping->datagram + IPHDRLEN))->icmp_id)
 			return (1);
 	}
 	else
 	{
 		if (((struct icmp*)(myping->rcv_buff + 48))->icmp_id
-				== myping->icmphdr->icmp_id)
+				== ((struct icmp*)(myping->datagram + IPHDRLEN))->icmp_id)
 			return (1);
 	}
 	return (0);
@@ -98,13 +98,11 @@ void							print_ping(float time_diff)
 	if (type != ICMP_ECHOREPLY)
 	{
 		myping->p_count[2]++;
-		printf("From %s: icmp_seq=%-3d ",
+		printf("From %s: icmp_seq=%-3d type=%d code=%d",
 				 myping->fromaddr,
-				 ((struct icmp*)(myping->datagram + IPHDRLEN))->icmp_seq);
-		if (type == ICMP_TIME_EXCEEDED)
-			printf("Time to Live Exceeded\n");
-		if (type == ICMP_DEST_UNREACH)
-			printf("Destination Unreachable\n");
+				 ((struct icmp*)(myping->datagram + IPHDRLEN))->icmp_seq,
+				 type,
+				 (int)((struct icmp*)(myping->rcv_buff + IPHDRLEN))->icmp_code);
 	}
 	else
 	{

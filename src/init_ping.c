@@ -6,7 +6,7 @@
 /*   By: lmariott <lmariott@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/21 19:45:06 by lmariott          #+#    #+#             */
-/*   Updated: 2020/06/27 16:53:26 by lmariott         ###   ########.fr       */
+/*   Updated: 2020/07/13 12:30:48 by lmariott         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,8 +24,8 @@ int					init_myping(void)
 		return (-1);
 	}
 	myping->content = (char*)(myping->datagram + IPHDRLEN + ICMPHDRLEN);
-	myping->icmphdr = (struct icmp*)(myping->datagram + IPHDRLEN);
-	myping->iphdr = (struct ip*)myping->datagram;
+	//myping->icmphdr = (struct icmp*)(myping->datagram + IPHDRLEN);
+	//myping->iphdr = (struct ip*)myping->datagram;
 	gettimeofday(&myping->init_tv, NULL);
 	return (0);
 }

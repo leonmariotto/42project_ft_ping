@@ -6,7 +6,7 @@
 /*   By: lmariott <lmariott@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/16 00:43:13 by lmariott          #+#    #+#             */
-/*   Updated: 2020/07/02 12:02:02 by lmariott         ###   ########.fr       */
+/*   Updated: 2020/07/13 12:21:22 by lmariott         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,8 +55,8 @@ typedef struct				s_ping
 	int								socket; // Mon socket RAW
 	struct addrinfo		*dst_ai; // Address de destination obtenu avec getaddrinfo
 	void							*datagram; // DATAGRAM TO SEND
-	struct ip					*iphdr; // HEADER IP
-	struct icmp				*icmphdr; // HEADER ICMP
+	//struct ip					*iphdr; // HEADER IP
+	//struct icmp				*icmphdr; // HEADER ICMP
 	char							*content; // DATA
 	char							*dstname; // DSTNAME FOR STOP_PING
 	char							*dstaddr; // DSTADDR FOR STOP_PING
