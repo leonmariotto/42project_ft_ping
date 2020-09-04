@@ -6,7 +6,7 @@
 /*   By: lsimanau <lsimanau@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/05 17:22:32 by llenotre          #+#    #+#             */
-/*   Updated: 2020/05/03 16:44:22 by lmariott         ###   ########.fr       */
+/*   Updated: 2020/09/04 22:59:50 by lmariott         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -165,6 +165,6 @@ t_list			*ft_arrtolst(char **arr);
 ** Linda's functions
 */
 
-t_list		*t_listdup(t_list *lst);
+t_list			*t_listdup(t_list *lst);
 
 #endif

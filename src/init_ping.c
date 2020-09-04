@@ -6,29 +6,13 @@
 /*   By: lmariott <lmariott@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/21 19:45:06 by lmariott          #+#    #+#             */
-/*   Updated: 2020/07/13 12:30:48 by lmariott         ###   ########.fr       */
+/*   Updated: 2020/09/04 23:08:16 by lmariott         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_ping.h"
 #include <sys/time.h>
-
-int					init_myping(void)
-{
-	if (!(myping = (t_ping*)ft_memalloc(sizeof(t_ping)))
-			|| !(myping->datagram = ft_memalloc(IPHDRLEN + ICMPHDRLEN + DATALEN))
-			|| !(myping->dstaddr = ft_strnew(35))
-			|| !(myping->fromaddr = ft_strnew(35)))
-	{
-		ft_putendl_fd("malloc call return an error", 2);
-		return (-1);
-	}
-	myping->content = (char*)(myping->datagram + IPHDRLEN + ICMPHDRLEN);
-	//myping->icmphdr = (struct icmp*)(myping->datagram + IPHDRLEN);
-	//myping->iphdr = (struct ip*)myping->datagram;
-	gettimeofday(&myping->init_tv, NULL);
-	return (0);
-}
+#include <stdio.h>
 
 /*
 ** Step 1 : Resolv addrs
@@ -39,15 +23,40 @@ int					init_myping(void)
 
 int					init_ping(char *dsthost)
 {
-	if (!(myping->dstname = ft_strdup(dsthost)))
+	if (!(g_myping->dstname = ft_strdup(dsthost)))
 		return (-1);
 	if (resolv_addrs(dsthost) < 0)
 		return (-1);
 	if (fill_content() < 0)
 		return (-1);
-	if (fill_hdrs() < 0)
+	if (g_myping->opt.ip6)
+	{
+		if (fill_hdrs6() < 0)
+			return (-1);
+		if (request_socket6() < 0)
+			return (-1);
+	}
+	else
+	{
+		if (fill_hdrs4() < 0)
+			return (-1);
+		if (request_socket4() < 0)
+			return (-1);
+	}
+	return (0);
+}
+
+int					init_myping(void)
+{
+	if (!(g_myping = (t_ping*)ft_memalloc(sizeof(t_ping)))
+			|| !(g_myping->datagram = ft_memalloc(IPHDRLEN + ICMPHDRLEN
+					+ DATALEN))
+			|| !(g_myping->dstaddr = ft_strnew(35))
+			|| !(g_myping->fromaddr = ft_strnew(35)))
+	{
+		ft_putendl_fd("malloc call return an error", 2);
 		return (-1);
-	if (request_socket() < 0)
-		return (-1);
+	}
+	gettimeofday(&g_myping->init_tv, NULL);
 	return (0);
 }

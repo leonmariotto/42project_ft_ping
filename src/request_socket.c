@@ -6,7 +6,7 @@
 /*   By: lmariott <lmariott@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/24 16:33:56 by lmariott          #+#    #+#             */
-/*   Updated: 2020/06/27 22:11:08 by lmariott         ###   ########.fr       */
+/*   Updated: 2020/09/04 23:06:07 by lmariott         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,40 +16,46 @@
 /*
 ** Ouverture du socket raw
 ** need root privilege
-*/
-
-/*
 ** Setsockopt pour que le noyau n'ajoute pas de header IP, falcultatif
 ** avec IPPROTO_ICMP
 ** Optval non-zero for enable boolean option. (man)
 */
 
-int						request_socket(void)
+static int				socketerror(char *msg)
+{
+	ft_putendl_fd(msg, 2);
+	return (-1);
+}
+
+int						request_socket6(void)
+{
+	if ((g_myping->socket = socket(AF_INET6, SOCK_RAW, IPPROTO_ICMPV6)) < 0)
+		return (socketerror("socket raw v6 return an error\nAre you root ?\n"));
+	return (0);
+}
+
+int						request_socket4(void)
 {
 	int										optval;
 	int										filt;
-	struct timeval				tv;
+	struct timeval							tv;
 
-	filt = ~((1<<ICMP_SOURCE_QUENCH)|
-			      (1<<ICMP_DEST_UNREACH)|
-			      (1<<ICMP_TIME_EXCEEDED)|
-			      (1<<ICMP_PARAMETERPROB)|
-			      (1<<ICMP_REDIRECT)|
-			      (1<<ICMP_ECHOREPLY));
-	if ((myping->socket = socket(AF_INET, SOCK_RAW, IPPROTO_ICMP)) < 0)
-	{
-		ft_putendl_fd("socket return an error\nAre you root ?\n", 2);
-		return (-1);
-	}
+	filt = ~((1 << ICMP_SOURCE_QUENCH) |
+		(1 << ICMP_DEST_UNREACH) |
+		(1 << ICMP_TIME_EXCEEDED) |
+		(1 << ICMP_PARAMETERPROB) |
+		(1 << ICMP_REDIRECT) |
+		(1 << ICMP_ECHOREPLY));
+	if ((g_myping->socket = socket(AF_INET, SOCK_RAW, IPPROTO_ICMP)) < 0)
+		return (socketerror("socket raw return an error\nAre you root ?\n"));
 	optval = 1;
 	tv.tv_sec = 1;
 	tv.tv_usec = 0;
-  if (setsockopt(myping->socket, IPPROTO_IP, IP_HDRINCL, &optval, sizeof(int))
-			|| setsockopt(myping->socket, SOL_RAW, 1, &filt, sizeof filt) == -1
-			|| setsockopt(myping->socket, IPPROTO_IP, SO_RCVTIMEO, (void*)&tv, sizeof(struct timeval)))
-	{
-		ft_putendl_fd("setsockopt return an error", 2);
-		return (-1);
-	}
+	if (setsockopt(g_myping->socket, IPPROTO_IP, IP_HDRINCL, &optval, sizeof(int))
+		|| setsockopt(g_myping->socket, SOL_RAW, 1, &filt, sizeof(filt)) == -1
+		|| setsockopt(g_myping->socket, (g_myping->opt.ip6 ?
+			IPPROTO_IPV6 : IPPROTO_IP), SO_RCVTIMEO, (void*)&tv,
+			sizeof(struct timeval)))
+		return (socketerror("setsockopt return an error"));
 	return (0);
 }

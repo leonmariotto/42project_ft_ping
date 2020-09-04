@@ -6,7 +6,7 @@
 /*   By: lmariott <lmariott@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/16 00:37:52 by lmariott          #+#    #+#             */
-/*   Updated: 2020/06/29 21:49:36 by lmariott         ###   ########.fr       */
+/*   Updated: 2020/09/04 23:06:30 by lmariott         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,8 +19,8 @@ int				getip(char *hostname, struct addrinfo **result)
 
 	if (!(hints = (struct addrinfo*)malloc(sizeof(struct addrinfo))))
 		return (-1);
-	hints->ai_family = (myping->opt.ip6 ? AF_INET6 : AF_INET);
-	hints->ai_socktype = SOCK_STREAM;
+	hints->ai_family = (g_myping->opt.ip6 ? AF_INET6 : AF_INET);
+	hints->ai_socktype = SOCK_DGRAM;
 	hints->ai_flags = 0;
 	hints->ai_protocol = 0;
 	if (getaddrinfo(hostname, 0, hints, result) != 0)

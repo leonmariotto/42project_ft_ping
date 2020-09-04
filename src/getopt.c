@@ -6,13 +6,48 @@
 /*   By: lmariott <lmariott@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/29 00:21:07 by lmariott          #+#    #+#             */
-/*   Updated: 2020/07/02 12:01:36 by lmariott         ###   ########.fr       */
+/*   Updated: 2020/09/04 23:07:28 by lmariott         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_ping.h"
 
-char				*ft_getopt(char **args)
+static int		isargvalid(char **args, int i, char opt)
+{
+	if (ft_isdigit(*args[i]) && ft_atoi(args[i]) > 0
+			&& ft_atoi(args[i]) < 256)
+	{
+		if (opt == 't')
+			g_myping->opt.ttl = ft_atoi(args[i]);
+		else if (opt == 'p')
+			g_myping->opt.f = ft_atoi(args[i]);
+		return (1);
+	}
+	else
+	{
+		ft_putendl_fd("ft_ping: Invalid argument", 2);
+		return (0);
+	}
+}
+
+static int		whicharg(char **args, int i)
+{
+	if (args[i][1] == 't')
+		return (isargvalid(args, ++i, 't'));
+	else if (args[i][1] == '6')
+		return ((g_myping->opt.ip6 = 1));
+	else if (args[i][1] == 'v')
+		return ((g_myping->opt.v = 1));
+	else if (args[i][1] == 'p')
+		return (isargvalid(args, ++i, 'p'));
+	else
+	{
+		ft_putendl_fd("ft_ping: Unknown opt : %c\n", args[i][1]);
+		return (0);
+	}
+}
+
+char			*ft_getopt(char **args)
 {
 	int i;
 
@@ -25,38 +60,8 @@ char				*ft_getopt(char **args)
 				return (NULL);
 			return (args[i]);
 		}
-		else if (args[i][1] == 't')
-		{
-			if (ft_isdigit(*args[++i]) && ft_atoi(args[i]) > 0
-					&& ft_atoi(args[i]) < 256)
-				myping->opt.ttl = ft_atoi(args[i]);
-			else
-			{
-				ft_putendl_fd("ft_ping: can't set unicast time-to-live: \
-Invalid argument", 2);
-				return (NULL);
-			}
-		}
-		else if (args[i][1] == '6')
-		{
-			myping->opt.ip6 = 1;
-		}
-		else if (args[i][1] == 'v')
-		{
-			myping->opt.v = 1;
-		}
-		else if (args[i][1] == 'p')
-		{
-			if (ft_isdigit(*args[++i]) && ft_atoi(args[i]) > 0
-					&& ft_atoi(args[i]) < 256)
-				myping->opt.f = ft_atoi(args[i]);
-			else
-			{
-				ft_putendl_fd("ft_ping: can't set unicast time-to-live: \
-Invalid argument", 2);
-				return (NULL);
-			}
-		}
+		if (!whicharg(args, i))
+			return (NULL);
 	}
 	return (NULL);
 }
