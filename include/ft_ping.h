@@ -6,7 +6,7 @@
 /*   By: lmariott <lmariott@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/16 00:43:13 by lmariott          #+#    #+#             */
-/*   Updated: 2020/09/04 23:04:44 by lmariott         ###   ########.fr       */
+/*   Updated: 2020/09/05 01:34:43 by lmariott         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,10 +108,10 @@ typedef struct								s_ping
 ** Source address				128 bits
 ** Destination address	128 bits
 */
-struct							s_ip6
-{
-	int			vtf;
-};
+//struct							s_ip6
+//{
+//	int			vtf;
+//};
 
 /*
 ** ICMP (ipv4) HEADER DEFINE

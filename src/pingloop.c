@@ -6,7 +6,7 @@
 /*   By: lmariott <lmariott@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/06/27 17:09:43 by lmariott          #+#    #+#             */
-/*   Updated: 2020/09/04 23:06:17 by lmariott         ###   ########.fr       */
+/*   Updated: 2020/09/07 11:56:14 by lmariott         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ int								rcv_(void)
 	struct msghdr					message;
 	int								r;
 
-	srcaddrsize = g_myping->dst_ai->ai_addrlen;
+	srcaddrsize = (g_myping->opt.ip6 ? INET6_ADDRSTRLEN : INET_ADDRSTRLEN);
 	iov[0].iov_base = g_myping->rcv_buff;
 	iov[0].iov_len = sizeof(g_myping->rcv_buff);
 	message.msg_name = &src_addr;
@@ -39,9 +39,17 @@ int								rcv_(void)
 	message.msg_control = 0;
 	message.msg_controllen = 0;
 	r = recvmsg(g_myping->socket, &message, 0);
-	inet_ntop((g_myping->opt.ip6 ? AF_INET6 : AF_INET),
+	//inet_ntop((g_myping->opt.ip6 ? AF_INET6 : AF_INET),
+	//		(const void *)&((struct sockaddr_in*)&src_addr)->sin_addr,
+	//		g_myping->fromaddr, srcaddrsize);
+	if (!g_myping->opt.ip6)
+		inet_ntop(AF_INET,
 			(const void *)&((struct sockaddr_in*)&src_addr)->sin_addr,
-			g_myping->fromaddr, srcaddrsize);
+			g_myping->fromaddr, INET_ADDRSTRLEN);
+	else
+		inet_ntop(AF_INET6,
+			(const void *)&((struct sockaddr_in6*)&src_addr)->sin6_addr,
+			g_myping->fromaddr, INET6_ADDRSTRLEN);
 	return (r);
 }
 

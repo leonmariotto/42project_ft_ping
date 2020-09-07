@@ -6,7 +6,7 @@
 /*   By: lmariott <lmariott@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/21 19:45:06 by lmariott          #+#    #+#             */
-/*   Updated: 2020/09/04 23:08:16 by lmariott         ###   ########.fr       */
+/*   Updated: 2020/09/07 11:59:51 by lmariott         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,8 +51,8 @@ int					init_myping(void)
 	if (!(g_myping = (t_ping*)ft_memalloc(sizeof(t_ping)))
 			|| !(g_myping->datagram = ft_memalloc(IPHDRLEN + ICMPHDRLEN
 					+ DATALEN))
-			|| !(g_myping->dstaddr = ft_strnew(35))
-			|| !(g_myping->fromaddr = ft_strnew(35)))
+			|| !(g_myping->dstaddr = ft_strnew(INET6_ADDRSTRLEN))
+			|| !(g_myping->fromaddr = ft_strnew(INET6_ADDRSTRLEN)))
 	{
 		ft_putendl_fd("malloc call return an error", 2);
 		return (-1);

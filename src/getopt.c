@@ -6,11 +6,12 @@
 /*   By: lmariott <lmariott@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/29 00:21:07 by lmariott          #+#    #+#             */
-/*   Updated: 2020/09/04 23:07:28 by lmariott         ###   ########.fr       */
+/*   Updated: 2020/09/05 00:24:40 by lmariott         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_ping.h"
+#include <stdio.h>
 
 static int		isargvalid(char **args, int i, char opt)
 {
@@ -30,6 +31,13 @@ static int		isargvalid(char **args, int i, char opt)
 	}
 }
 
+static int		ping_help(void)
+{
+	ft_putendl("Usage: ft_ping [-vh] [-t ttl] [-p pattern] destination");
+	ft_putendl("Usage: ft_ping -6 [-vh] [-t ttl] [-p pattern] destination");
+	return (0);
+}
+
 static int		whicharg(char **args, int i)
 {
 	if (args[i][1] == 't')
@@ -40,9 +48,11 @@ static int		whicharg(char **args, int i)
 		return ((g_myping->opt.v = 1));
 	else if (args[i][1] == 'p')
 		return (isargvalid(args, ++i, 'p'));
+	else if (args[i][1] == 'h')
+		return (ping_help());
 	else
 	{
-		ft_putendl_fd("ft_ping: Unknown opt : %c\n", args[i][1]);
+		printf("ft_ping: Unknown opt : %c\n", args[i][1]);
 		return (0);
 	}
 }

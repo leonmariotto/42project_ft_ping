@@ -6,18 +6,12 @@
 /*   By: lmariott <lmariott@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/03 17:36:22 by lmariott          #+#    #+#             */
-/*   Updated: 2020/09/04 23:04:57 by lmariott         ###   ########.fr       */
+/*   Updated: 2020/09/05 00:16:58 by lmariott         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_ping.h"
 #include <stdio.h>
-
-int				print_usage(void)
-{
-	ft_putendl("ft_ping usage : ft_ping <hostname>");
-	return (1);
-}
 
 int				main(int ac, char **av)
 {
@@ -27,7 +21,7 @@ int				main(int ac, char **av)
 	if (init_myping() < 0)
 		return (1);
 	if (!(host = ft_getopt(&av[1])))
-		return (print_usage());
+		return (1);
 	if (init_ping(host) < 0)
 		return (1);
 	signal_();
