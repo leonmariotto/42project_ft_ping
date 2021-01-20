@@ -6,11 +6,12 @@
 /*   By: lmariott <lmariott@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/06/27 17:09:43 by lmariott          #+#    #+#             */
-/*   Updated: 2020/09/07 11:56:14 by lmariott         ###   ########.fr       */
+/*   Updated: 2021/01/07 16:18:18 by lmariott         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_ping.h"
+#include "g_myping.h"
 #include <sys/time.h>
 #include <stdio.h>
 #include <signal.h>
@@ -19,6 +20,10 @@
 ** New pingloop :
 ** Le packet est envoyé toutes les secondes avec SIGALRM
 ** Le recvmsg est placé dans un while (42)
+**
+** inet_ntop((g_myping->opt.ip6 ? AF_INET6 : AF_INET),
+**		(const void *)&((struct sockaddr_in*)&src_addr)->sin_addr,
+**		g_myping->fromaddr, srcaddrsize);
 */
 
 int								rcv_(void)
@@ -39,9 +44,6 @@ int								rcv_(void)
 	message.msg_control = 0;
 	message.msg_controllen = 0;
 	r = recvmsg(g_myping->socket, &message, 0);
-	//inet_ntop((g_myping->opt.ip6 ? AF_INET6 : AF_INET),
-	//		(const void *)&((struct sockaddr_in*)&src_addr)->sin_addr,
-	//		g_myping->fromaddr, srcaddrsize);
 	if (!g_myping->opt.ip6)
 		inet_ntop(AF_INET,
 			(const void *)&((struct sockaddr_in*)&src_addr)->sin_addr,

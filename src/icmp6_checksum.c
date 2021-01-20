@@ -6,11 +6,12 @@
 /*   By: lmariott <lmariott@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/29 06:40:19 by lmariott          #+#    #+#             */
-/*   Updated: 2020/09/04 22:15:40 by lmariott         ###   ########.fr       */
+/*   Updated: 2021/01/07 16:17:46 by lmariott         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_ping.h"
+#include "g_myping.h"
 
 /*
 ** Build IPv6 ICMP pseudo-header and call checksum

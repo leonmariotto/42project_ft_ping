@@ -6,11 +6,12 @@
 /*   By: lmariott <lmariott@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/21 19:54:29 by lmariott          #+#    #+#             */
-/*   Updated: 2020/09/07 11:57:08 by lmariott         ###   ########.fr       */
+/*   Updated: 2021/01/07 16:19:01 by lmariott         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_ping.h"
+#include "g_myping.h"
 
 int					resolv_addrs(char *dsthost)
 {

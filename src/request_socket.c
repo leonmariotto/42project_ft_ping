@@ -6,11 +6,12 @@
 /*   By: lmariott <lmariott@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/24 16:33:56 by lmariott          #+#    #+#             */
-/*   Updated: 2020/09/04 23:06:07 by lmariott         ###   ########.fr       */
+/*   Updated: 2021/01/07 16:18:48 by lmariott         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_ping.h"
+#include "g_myping.h"
 #include <stdio.h>
 
 /*
@@ -36,9 +37,9 @@ int						request_socket6(void)
 
 int						request_socket4(void)
 {
-	int										optval;
-	int										filt;
-	struct timeval							tv;
+	int			optval;
+	int			filt;
+	struct timeval		tv;
 
 	filt = ~((1 << ICMP_SOURCE_QUENCH) |
 		(1 << ICMP_DEST_UNREACH) |

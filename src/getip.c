@@ -6,11 +6,12 @@
 /*   By: lmariott <lmariott@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/16 00:37:52 by lmariott          #+#    #+#             */
-/*   Updated: 2020/09/04 23:06:30 by lmariott         ###   ########.fr       */
+/*   Updated: 2021/01/07 16:17:21 by lmariott         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_ping.h"
+#include "g_myping.h"
 #include <stdio.h>
 
 int				getip(char *hostname, struct addrinfo **result)

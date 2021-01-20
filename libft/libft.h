@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   libft.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lsimanau <lsimanau@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lmariott <lmariott@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/11/05 17:22:32 by llenotre          #+#    #+#             */
-/*   Updated: 2020/09/04 22:59:50 by lmariott         ###   ########.fr       */
+/*   Created: 2021/01/07 14:05:22 by lmariott          #+#    #+#             */
+/*   Updated: 2021/01/07 14:20:46 by lmariott         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -139,9 +139,6 @@ void			ft_lstrev(t_list **lst);
 int				ft_str_isdigit(const char *str);
 void			default_del(void *content, size_t content_size);
 
-/*
-** Pedro's functions
-*/
 int				ft_atoibase(const char *s, const char *base);
 int				ft_isblank(int c);
 int				ft_isupper(int c);
@@ -154,16 +151,8 @@ char			*ft_strrev(char *s);
 int				ft_islower(int c);
 char			*ft_strnulljoin(const char *s1, const char *s2);
 
-/*
-** Leon's functions
-*/
-
 char			**ft_lsttoarr(t_list *lst);
 t_list			*ft_arrtolst(char **arr);
-
-/*
-** Linda's functions
-*/
 
 t_list			*t_listdup(t_list *lst);
 

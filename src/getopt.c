@@ -6,11 +6,12 @@
 /*   By: lmariott <lmariott@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/29 00:21:07 by lmariott          #+#    #+#             */
-/*   Updated: 2020/09/05 00:24:40 by lmariott         ###   ########.fr       */
+/*   Updated: 2021/01/07 16:17:33 by lmariott         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_ping.h"
+#include "g_myping.h"
 #include <stdio.h>
 
 static int		isargvalid(char **args, int i, char opt)

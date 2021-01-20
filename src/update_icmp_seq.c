@@ -6,11 +6,12 @@
 /*   By: lmariott <lmariott@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/25 21:20:51 by lmariott          #+#    #+#             */
-/*   Updated: 2020/09/04 23:06:38 by lmariott         ###   ########.fr       */
+/*   Updated: 2021/01/07 16:19:52 by lmariott         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_ping.h"
+#include "g_myping.h"
 #include <stdio.h>
 
 void					update_icmp_seq(void)
@@ -18,8 +19,8 @@ void					update_icmp_seq(void)
 	((struct icmp*)(g_myping->datagram + IPHDRLEN))->icmp_seq += 1;
 	((struct icmp*)(g_myping->datagram + IPHDRLEN))->icmp_cksum = 0;
 	((struct icmp*)(g_myping->datagram + IPHDRLEN))->icmp_cksum =
-		checksum((unsigned short*)((struct icmp*)(g_myping->datagram + IPHDRLEN)),
-		ICMPHDRLEN + DATALEN);
+		checksum((unsigned short*)((struct icmp*)(g_myping->datagram +
+		IPHDRLEN)), ICMPHDRLEN + DATALEN);
 }
 
 void					update_icmp_seq6(void)

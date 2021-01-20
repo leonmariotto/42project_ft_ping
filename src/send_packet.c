@@ -6,11 +6,12 @@
 /*   By: lmariott <lmariott@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/04 18:10:32 by lmariott          #+#    #+#             */
-/*   Updated: 2020/09/04 23:07:48 by lmariott         ###   ########.fr       */
+/*   Updated: 2021/01/07 16:19:15 by lmariott         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_ping.h"
+#include "g_myping.h"
 #include <sys/time.h>
 
 /*
@@ -21,7 +22,7 @@
 ** - Update p_count[0]
 */
 
-void							send_packet(int sign)
+void		send_packet(int sign)
 {
 	void			*outpack;
 
@@ -32,7 +33,7 @@ void							send_packet(int sign)
 	gettimeofday(&g_myping->t_send, 0);
 	g_myping->p_count[0]++;
 	sendto(g_myping->socket, outpack, IPHDRLEN + ICMPHDRLEN + DATALEN, 0
-						, g_myping->dst_ai->ai_addr, g_myping->dst_ai->ai_addrlen);
+		, g_myping->dst_ai->ai_addr, g_myping->dst_ai->ai_addrlen);
 	alarm(1);
 }
 
@@ -43,8 +44,10 @@ void							send_packet(int sign)
 ** On envoie l'icmp + data.
 */
 
-static void						send_packet6end(struct msghdr *msghdr)
+static void	send_packet6end(struct msghdr *msghdr, struct cmsghdr *cmsghdr)
 {
+	*((int *)CMSG_DATA(cmsghdr)) = (g_myping->opt.ttl ?
+		g_myping->opt.ttl : 255);
 	g_myping->t_count = (int)diff_timeval_now(g_myping->init_tv);
 	gettimeofday(&g_myping->t_send, 0);
 	if (sendmsg(g_myping->socket, msghdr, 0) < 0)
@@ -59,7 +62,7 @@ static void						send_packet6end(struct msghdr *msghdr)
 	alarm(1);
 }
 
-void							send_packet6(int sign)
+void		send_packet6(int sign)
 {
 	struct msghdr			msghdr;
 	struct cmsghdr			*cmsghdr;
@@ -84,6 +87,5 @@ void							send_packet6(int sign)
 	cmsghdr->cmsg_level = IPPROTO_IPV6;
 	cmsghdr->cmsg_type = IPV6_HOPLIMIT;
 	cmsghdr->cmsg_len = CMSG_LEN(sizeof(int));
-	*((int *)CMSG_DATA(cmsghdr)) = (g_myping->opt.ttl ? g_myping->opt.ttl : 255);
-	send_packet6end(&msghdr);
+	send_packet6end(&msghdr, cmsghdr);
 }

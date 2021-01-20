@@ -6,11 +6,12 @@
 /*   By: lmariott <lmariott@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/04 18:07:19 by lmariott          #+#    #+#             */
-/*   Updated: 2020/09/04 23:07:40 by lmariott         ###   ########.fr       */
+/*   Updated: 2021/01/07 16:18:35 by lmariott         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_ping.h"
+#include "g_myping.h"
 #include <stdio.h>
 
 void							print_ping(float time_diff)

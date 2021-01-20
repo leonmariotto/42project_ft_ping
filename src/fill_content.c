@@ -6,11 +6,13 @@
 /*   By: lmariott <lmariott@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/24 16:40:17 by lmariott          #+#    #+#             */
-/*   Updated: 2020/09/04 23:05:44 by lmariott         ###   ########.fr       */
+/*   Updated: 2021/01/07 16:16:53 by lmariott         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_ping.h"
+#include "g_myping.h"
+
 
 int					fill_content(void)
 {

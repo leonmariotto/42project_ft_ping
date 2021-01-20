@@ -6,11 +6,12 @@
 /*   By: lmariott <lmariott@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/03 17:36:22 by lmariott          #+#    #+#             */
-/*   Updated: 2020/09/05 00:16:58 by lmariott         ###   ########.fr       */
+/*   Updated: 2021/01/07 16:13:55 by lmariott         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_ping.h"
+#include "myping.h"
 #include <stdio.h>
 
 int				main(int ac, char **av)

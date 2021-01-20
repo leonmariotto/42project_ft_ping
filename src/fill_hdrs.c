@@ -6,11 +6,12 @@
 /*   By: lmariott <lmariott@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/21 20:05:24 by lmariott          #+#    #+#             */
-/*   Updated: 2020/09/04 23:05:54 by lmariott         ###   ########.fr       */
+/*   Updated: 2021/01/07 16:17:09 by lmariott         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_ping.h"
+#include "g_myping.h"
 #include <stdio.h>
 
 unsigned short			checksum(unsigned short *addr, int len)
@@ -85,7 +86,7 @@ int						fill_hdrs4(void)
 	((struct icmp*)(g_myping->datagram + IPHDRLEN))->icmp_seq = 0;
 	((struct icmp*)(g_myping->datagram + IPHDRLEN))->icmp_cksum = 0;
 	((struct icmp*)(g_myping->datagram + IPHDRLEN))->icmp_cksum =
-		checksum((unsigned short*)((struct icmp*)(g_myping->datagram + IPHDRLEN)),
-				ICMPHDRLEN + DATALEN);
+		checksum((unsigned short*)((struct icmp*)(g_myping->datagram
+				+ IPHDRLEN)), ICMPHDRLEN + DATALEN);
 	return (0);
 }

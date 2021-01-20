@@ -1,18 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_putstr.c                                        :+:      :+:    :+:   */
+/*   g_myping.h                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: lmariott <lmariott@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/01/07 14:15:31 by lmariott          #+#    #+#             */
-/*   Updated: 2021/01/07 14:15:31 by lmariott         ###   ########.fr       */
+/*   Created: 2021/01/07 16:14:23 by lmariott          #+#    #+#             */
+/*   Updated: 2021/01/08 15:54:20 by lmariott         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#ifndef G_MYPING_H
+# define G_MYPING_H
 
-void	ft_putstr(char const *s)
-{
-	ft_putstr_fd(s, STDOUT);
-}
+extern t_ping			*g_myping;
+
+#endif

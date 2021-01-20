@@ -6,11 +6,12 @@
 /*   By: lmariott <lmariott@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/26 14:58:06 by lmariott          #+#    #+#             */
-/*   Updated: 2020/05/26 15:20:05 by lmariott         ###   ########.fr       */
+/*   Updated: 2021/01/07 16:19:28 by lmariott         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_ping.h"
+#include "g_myping.h"
 #include <signal.h>
 
 void			signal_handler(int sign)
