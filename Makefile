@@ -6,13 +6,13 @@
 #    By: lsimanau <lsimanau@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/07/14 14:00:58 by pemora            #+#    #+#              #
-#    Updated: 2020/09/04 18:11:51 by lmariott         ###   ########.fr        #
+#    Updated: 2021/06/20 15:55:45 by lmariott         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME := ft_ping
 CC ?= clang
-CFLAGS ?= -Wall -Wextra -Werror -g3
+CFLAGS ?= -Wall -Wextra -Werror
 
 SRC := src/main.c\
 				src/init_ping.c\
